@@ -4,16 +4,6 @@ CastorTS is an efficient multivariate time-series foundation model for zero-shot
 
 The paper reports that CastorTS uses 18.7M parameters and 91M pretraining time points while achieving state-of-the-art forecasting performance on large-scale benchmarks.
 
-## Method Overview
-
-CastorTS is built around three components:
-
-- **Causality-Aware Augmentor (CAA)** constructs causality-preserving positive views and causality-disturbed negative views from inferred inter-variate causal graphs. This encourages the model to learn structural signals rather than only surface co-occurrence.
-- **Dynamic Symmetric Pyramid Mamba (DySP-Mamba)** provides a linear-complexity temporal backbone. It combines dynamic tokenization with a fine-to-coarse-to-fine pyramid to capture multi-granularity temporal patterns with fewer redundant tokens.
-- **Proxy Manifold Projector (PMP)** learns domain-proxy tokens on a hyperspherical manifold. During downstream adaptation, the model retrieves Top-K source proxies and injects them as compact domain priors for zero-shot prediction and lightweight few-shot tuning.
-
-The overall training objective combines temporal reconstruction, causality-aware Siamese contrastive learning, and proxy-based domain alignment.
-
 ## Reported Results
 
 The paper evaluates CastorTS on the TSLib benchmark with seven datasets: ETTh1, ETTh2, ETTm1, ETTm2, Weather, Electricity, and Traffic. The standard setting uses an input length of 512 and forecasting horizons of 96, 192, 336, and 720.
@@ -217,11 +207,6 @@ scripts/time_series_forecatsing/few_shot/
 - `--domain_len 128`: domain-proxy length used by the provided scripts.
 - `--d_model 256`: hidden dimension used by the provided scripts.
 - `--percent`: few-shot data percentage.
-
-## Checkpoints
-
-When experiments are run from `code & data/`, training checkpoints are saved under `./checkpoints/` and logs are saved under `./logs/`. During downstream forecasting, `models/CastorTS.py` loads the matching `CastorTS_CL` checkpoint automatically according to the generated experiment setting name.
-
 
 ## License
 
