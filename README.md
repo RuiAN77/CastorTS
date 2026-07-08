@@ -1,27 +1,55 @@
-# CastorTS: Causality-Guided Siamese Pretraining Model for Efficient Time Series Forecasting
+# CastorTS
 
-CastorTS is an efficient multivariate time-series foundation model for zero-shot and few-shot forecasting. The paper proposes a causality-guided Siamese pretraining framework that learns transferable knowledge along a temporal -> causal -> domain hierarchy, so the model can generalize across heterogeneous time-series domains with substantially lower model and data cost.
-
-The paper reports that CastorTS uses 18.7M parameters and 91M pretraining time points while achieving state-of-the-art forecasting performance on large-scale benchmarks.
-
-## Reported Results
-
-The paper evaluates CastorTS on the TSLib benchmark with seven datasets: ETTh1, ETTh2, ETTm1, ETTm2, Weather, Electricity, and Traffic. The standard setting uses an input length of 512 and forecasting horizons of 96, 192, 336, and 720.
-
-- **Zero-shot forecasting:** CastorTS achieves the best or tied-best result on 10 of 14 averaged dataset-metric entries while using only 18.7M parameters and 91M pretraining time points.
-- **5% few-shot forecasting:** CastorTS achieves the lowest overall averaged error and the best or tied-best performance on 10 of 14 averaged entries.
-- **10% few-shot forecasting:** CastorTS keeps the lowest overall averaged error and improves over compact foundation-model baselines on average.
-- **Efficiency:** Under the reported batch setting, CastorTS requires 15 ms inference time and 0.18 GB GPU memory per batch, providing a favorable accuracy-efficiency trade-off.
+The repo is the implementation for the paper: CastorTS: Causality-Guided Siamese Pretraining Model for Efficient Time Series Forecasting
 
 ## Supplementary Material
 
 `Supplementary Material.pdf` is the appendix accompanying the paper. It is useful for reproducing the full experimental narrative and for checking details that are only summarized in the main paper. The file contains:
 
 - Preliminaries for SSM, Mamba, and Mamba-2.
-- Additional CastorTS details, including the Siamese pair sampler, dynamic tokenization, and temporal decoding/de-tokenization.
+- Additional CastorTS details.
 - Proofs for the Floor Attention theorem and the hyperspherical proxy theorem.
 - Experimental details for pretraining datasets, TSLib datasets, GIFT-Eval datasets, baselines, implementation settings, and computational complexity.
-- Additional results for GIFT-Eval, module/objective/proxy ablations, graph corruption robustness, and related work.
+- Additional results for GIFT-Eval, ablations study, graph corruption robustness, and related work.
+
+## Dataset Statistics
+
+The paper uses non-overlapping datasets for open-domain pretraining and downstream evaluation. The pretraining corpus is assembled from public time-series sources and grouped into four domains. It contains about 91M time points in total and is used to learn transferable temporal, causal, and domain-level regularities.
+
+### Open-Domain Pretraining Datasets
+
+| Domain | Dataset | Time Points | Source |
+| --- | --- | ---: | --- |
+| Energy | Aus. Electricity Demand | 1,155,264 | Monash |
+| Energy | Wind | 7,397,147 | Monash |
+| Energy | PRSA | 4,628,448 | PRSA |
+| Nature | Sunspot | 73,924 | Monash |
+| Nature | Temperature Rain | 23,252,200 | Monash |
+| Nature | Saugeen River Flow | 23,741 | Monash |
+| Nature | KDD Cup 2018 | 2,942,364 | Monash |
+| Nature | US Births | 7,305 | Monash |
+| Health | SelfRegulationSCP1 | 3,015,936 | UEA |
+| Health | SelfRegulationSCP2 | 3,064,320 | UEA |
+| Health | PIGCVP | 624,000 | UCR |
+| Transport | PEMS03 | 9,382,464 | PEMS |
+| Transport | PEMS04 | 5,216,544 | PEMS |
+| Transport | PEMS07 | 24,921,792 | PEMS |
+| Transport | PEMS08 | 3,035,520 | PEMS |
+| Transport | Pedestrian Counts | 3,132,346 | Monash |
+
+### TSLib Downstream Benchmark
+
+The zero-shot and few-shot experiments evaluate on seven TSLib datasets covering electricity, weather, and traffic domains. These datasets range from 7 to 862 variables, 17,420 to 69,680 time points, and 10-minute to hourly sampling resolutions.
+
+| Dataset | Vars. | Time Points | Resolution | Domain |
+| --- | ---: | ---: | --- | --- |
+| ETTh1 | 7 | 17,420 | Hourly | Electricity |
+| ETTh2 | 7 | 17,420 | Hourly | Electricity |
+| ETTm1 | 7 | 69,680 | 15 min | Electricity |
+| ETTm2 | 7 | 69,680 | 15 min | Electricity |
+| Weather | 21 | 52,696 | 10 min | Weather |
+| Electricity | 321 | 26,304 | Hourly | Electricity |
+| Traffic | 862 | 17,544 | Hourly | Traffic |
 
 ## Repository Structure
 
@@ -107,44 +135,6 @@ python -m data_provider.data_manifest --root ./dataset
 
 See `code & data/dataset/README.md` for the exact placement of each pretraining and evaluation dataset.
 
-## Dataset Statistics
-
-The paper uses non-overlapping datasets for open-domain pretraining and downstream evaluation. The pretraining corpus is assembled from public time-series sources and grouped into four domains. It contains about 91M time points in total and is used to learn transferable temporal, causal, and domain-level regularities.
-
-### Open-Domain Pretraining Datasets
-
-| Domain | Dataset | Time Points | Source |
-| --- | --- | ---: | --- |
-| Energy | Aus. Electricity Demand | 1,155,264 | Monash |
-| Energy | Wind | 7,397,147 | Monash |
-| Energy | PRSA | 4,628,448 | PRSA |
-| Nature | Sunspot | 73,924 | Monash |
-| Nature | Temperature Rain | 23,252,200 | Monash |
-| Nature | Saugeen River Flow | 23,741 | Monash |
-| Nature | KDD Cup 2018 | 2,942,364 | Monash |
-| Nature | US Births | 7,305 | Monash |
-| Health | SelfRegulationSCP1 | 3,015,936 | UEA |
-| Health | SelfRegulationSCP2 | 3,064,320 | UEA |
-| Health | PIGCVP | 624,000 | UCR |
-| Transport | PEMS03 | 9,382,464 | PEMS |
-| Transport | PEMS04 | 5,216,544 | PEMS |
-| Transport | PEMS07 | 24,921,792 | PEMS |
-| Transport | PEMS08 | 3,035,520 | PEMS |
-| Transport | Pedestrian Counts | 3,132,346 | Monash |
-
-### TSLib Downstream Benchmark
-
-The zero-shot and few-shot experiments evaluate on seven TSLib datasets covering electricity, weather, and traffic domains. These datasets range from 7 to 862 variables, 17,420 to 69,680 time points, and 10-minute to hourly sampling resolutions.
-
-| Dataset | Vars. | Time Points | Resolution | Domain |
-| --- | ---: | ---: | --- | --- |
-| ETTh1 | 7 | 17,420 | Hourly | Electricity |
-| ETTh2 | 7 | 17,420 | Hourly | Electricity |
-| ETTm1 | 7 | 69,680 | 15 min | Electricity |
-| ETTm2 | 7 | 69,680 | 15 min | Electricity |
-| Weather | 21 | 52,696 | 10 min | Weather |
-| Electricity | 321 | 26,304 | Hourly | Electricity |
-| Traffic | 862 | 17,544 | Hourly | Traffic |
 
 ## Baselines
 
