@@ -1,0 +1,183 @@
+schema_version: 1
+project: CastorTS
+references:
+  castorts_main_pdf: C:/Users/86131/Downloads/main.pdf
+  rose_arxiv: https://arxiv.org/pdf/2405.17478
+  sempo_arxiv: https://arxiv.org/pdf/2510.19710
+  ttm_arxiv: https://arxiv.org/pdf/2401.03955v8
+  monash_forecasting_repository: https://forecastingdata.org/
+  tslib_huggingface: https://huggingface.co/datasets/thuml/Time-Series-Library
+  utsd_huggingface: https://huggingface.co/datasets/thuml/UTSD
+  uci_prsa: https://archive.ics.uci.edu/dataset/501/beijing+multi+site+air+quality+data
+  time_series_classification_archive: https://www.timeseriesclassification.com/
+  std_mae_pems: https://github.com/Jimmy-7664/STD-MAE
+notes:
+  - Pretraining and evaluation datasets must be non-overlapping.
+  - Pretraining entries follow the open-domain datasets reported by the CastorTS paper.
+  - Evaluation entries follow the seven TSLib downstream datasets used for zero-shot and few-shot forecasting.
+  - The loader supports local npy, npz, csv, txt, parquet, arrow, and tsf files, but it does not download large datasets automatically.
+
+pretraining:
+  - id: aus_electricity_demand
+    domain: Energy
+    display_name: Aus. Electricity Demand
+    time_points: 1155264
+    source: Monash
+    path: pretrain/energy/aus_electricity_demand
+    expected_formats: [npy, csv, tsf]
+  - id: wind
+    domain: Energy
+    display_name: Wind
+    time_points: 7397147
+    source: Monash
+    path: pretrain/energy/wind
+    expected_formats: [npy, csv, tsf]
+  - id: prsa
+    domain: Energy
+    display_name: PRSA
+    time_points: 4628448
+    source: PRSA
+    path: pretrain/energy/prsa
+    expected_formats: [npy, csv]
+  - id: sunspot
+    domain: Nature
+    display_name: Sunspot
+    time_points: 73924
+    source: Monash
+    path: pretrain/nature/sunspot
+    expected_formats: [npy, csv, tsf]
+  - id: temperature_rain
+    domain: Nature
+    display_name: Temperature Rain
+    time_points: 23252200
+    source: Monash
+    path: pretrain/nature/temperature_rain
+    expected_formats: [npy, csv, tsf]
+  - id: saugeen_river_flow
+    domain: Nature
+    display_name: Saugeen River Flow
+    time_points: 23741
+    source: Monash
+    path: pretrain/nature/saugeen_river_flow
+    expected_formats: [npy, csv, tsf]
+  - id: kdd_cup_2018
+    domain: Nature
+    display_name: KDD Cup 2018
+    time_points: 2942364
+    source: Monash
+    path: pretrain/nature/kdd_cup_2018
+    expected_formats: [npy, csv, tsf]
+  - id: us_births
+    domain: Nature
+    display_name: US Births
+    time_points: 7305
+    source: Monash
+    path: pretrain/nature/us_births
+    expected_formats: [npy, csv, tsf]
+  - id: self_regulation_scp1
+    domain: Health
+    display_name: SelfRegulationSCP1
+    time_points: 3015936
+    source: UEA
+    path: pretrain/health/self_regulation_scp1
+    expected_formats: [npy, csv, tsf]
+  - id: self_regulation_scp2
+    domain: Health
+    display_name: SelfRegulationSCP2
+    time_points: 3064320
+    source: UEA
+    path: pretrain/health/self_regulation_scp2
+    expected_formats: [npy, csv, tsf]
+  - id: pigcvp
+    domain: Health
+    display_name: PIGCVP
+    time_points: 624000
+    source: UCR
+    path: pretrain/health/pigcvp
+    expected_formats: [npy, csv, tsf]
+  - id: pems03
+    domain: Transport
+    display_name: PEMS03
+    time_points: 9382464
+    source: PEMS
+    path: pretrain/transport/pems03
+    expected_formats: [npz, npy, csv]
+  - id: pems04
+    domain: Transport
+    display_name: PEMS04
+    time_points: 5216544
+    source: PEMS
+    path: pretrain/transport/pems04
+    expected_formats: [npz, npy, csv]
+  - id: pems07
+    domain: Transport
+    display_name: PEMS07
+    time_points: 24921792
+    source: PEMS
+    path: pretrain/transport/pems07
+    expected_formats: [npz, npy, csv]
+  - id: pems08
+    domain: Transport
+    display_name: PEMS08
+    time_points: 3035520
+    source: PEMS
+    path: pretrain/transport/pems08
+    expected_formats: [npz, npy, csv]
+  - id: pedestrian_counts
+    domain: Transport
+    display_name: Pedestrian Counts
+    time_points: 3132346
+    source: Monash
+    path: pretrain/transport/pedestrian_counts
+    expected_formats: [npy, csv, tsf]
+
+evaluation:
+  - id: ETTh1
+    domain: Electricity
+    vars: 7
+    time_points: 17420
+    resolution: Hourly
+    path: evaluation/ETT-small/ETTh1.csv
+    legacy_path: ETT-small/ETTh1.csv
+  - id: ETTh2
+    domain: Electricity
+    vars: 7
+    time_points: 17420
+    resolution: Hourly
+    path: evaluation/ETT-small/ETTh2.csv
+    legacy_path: ETT-small/ETTh2.csv
+  - id: ETTm1
+    domain: Electricity
+    vars: 7
+    time_points: 69680
+    resolution: 15 min
+    path: evaluation/ETT-small/ETTm1.csv
+    legacy_path: ETT-small/ETTm1.csv
+  - id: ETTm2
+    domain: Electricity
+    vars: 7
+    time_points: 69680
+    resolution: 15 min
+    path: evaluation/ETT-small/ETTm2.csv
+    legacy_path: ETT-small/ETTm2.csv
+  - id: weather
+    domain: Weather
+    vars: 21
+    time_points: 52696
+    resolution: 10 min
+    path: evaluation/weather/weather.csv
+    legacy_path: weather/weather.csv
+  - id: electricity
+    domain: Electricity
+    vars: 321
+    time_points: 26304
+    resolution: Hourly
+    path: evaluation/electricity/electricity.csv
+    legacy_path: electricity/electricity.csv
+  - id: traffic
+    domain: Traffic
+    vars: 862
+    time_points: 17544
+    resolution: Hourly
+    path: evaluation/traffic/traffic.csv
+    legacy_path: traffic/traffic.csv
