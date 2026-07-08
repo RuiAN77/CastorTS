@@ -1,9 +1,5 @@
 # CastorTS Baseline Sources
 
-This folder collects open-source implementations for the baseline methods compared in the CastorTS paper. The code is organized by the categories used in the experimental section.
-
-These repositories are provided as reference implementations. They are not vendored into the CastorTS training pipeline, and their dependencies, checkpoints, data preprocessing, and licenses remain governed by their original projects. Large pretrained weights are not downloaded here.
-
 ## Directory Layout
 
 ```text
@@ -53,10 +49,3 @@ Baseline/
 | TimesNet | `task_specific_forecasters/TimesNet` | https://github.com/thuml/TimesNet | GitHub archive |
 | FEDformer | `task_specific_forecasters/FEDformer` | https://github.com/MAZiqing/FEDformer | GitHub archive |
 | Time-Series-Library | `shared_frameworks/Time-Series-Library` | https://github.com/thuml/Time-Series-Library | GitHub archive |
-
-## Notes
-
-- `Time-Series-Library` is included as a shared experiment framework because several task-specific forecasting baselines are commonly maintained or reproduced through the THUML time-series codebase.
-- `TTM_granite-tsfm` was extracted from GitHub archive on Windows. `Expand-Archive` reported a few long-path warnings, but the main project files and `tsfm_public/` source directory are present.
-- Archive-based folders do not include `.git` history. Use the source URLs above to refresh them if exact revision tracking is required.
-- Each baseline may require its own Python environment and pretrained checkpoint. The CastorTS `requirements.txt` is not expected to satisfy all baseline dependencies.
