@@ -1,7 +1,8 @@
 # CastorTS
 
 The repo is the implementation for the paper: **CastorTS: Causality-Guided Siamese Pretraining Model for Efficient Time Series Forecasting**
-![CastorTS Framework](图片链接地址)
+
+![CastorTS Framework](https://github.com/RuiAN77/CastorTS/blob/main/CastorTS.png)
 ## Supplementary Material
 
 `Supplementary Material.pdf` is the appendix accompanying the paper. It is useful for reproducing the full experimental narrative and for checking details that are only summarized in the main paper. The file contains:
